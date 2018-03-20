@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QKeyEvent>
+#include <QTimer>
 
 class Game : public QGLWidget {
     Q_OBJECT
@@ -15,10 +16,16 @@ public:
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
+    void update();
     void paintGL();
 
-private:
+    void keyPressEvent(QKeyEvent * event);
+    void keyReleaseEvent(QKeyEvent * event);
 
+private:
+    QTimer timer;
+    double position = 0;
+    std::map<int, bool> keys;
 };
 
 #endif // MYGLWIDGET_H

@@ -19,6 +19,6 @@ TARGET 	  = TD2
 
 # fichiers sources/headers
 SOURCES	+= main.cpp \
-    Game.cpp
+    game.cpp
 HEADERS += \
-    Game.h
+    game.h
