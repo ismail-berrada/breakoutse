@@ -1,6 +1,9 @@
 #include "entity.h"
 
-Entity::Entity()
-{
+Entity::Entity() {
+    quadric = gluNewQuadric();
+}
 
+Entity::~Entity() {
+    gluDeleteQuadric(quadric);
 }

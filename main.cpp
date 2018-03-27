@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <ctime>
-#include "Game.h"
+#include "game.h"
 
 int main(int argc, char *argv[]) {
     srand(time(nullptr));
