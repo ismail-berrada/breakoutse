@@ -5,9 +5,9 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDateTime>
-#include "Ball.h"
-#include "Level.h"
-#include "Paddle.h"
+#include "ball.h"
+#include "level.h"
+#include "paddle.h"
 
 const unsigned int WIN_WIDTH  = 960;
 const unsigned int WIN_HEIGHT = 640;
@@ -52,6 +52,7 @@ void Game::update() {
     paddle->update(dt);
     ball->update(dt);
     updateGL();
+    previousKeys = std::map<int, bool>(keys);
 }
 
 void Game::paintGL() {
@@ -65,6 +66,15 @@ void Game::paintGL() {
     level->render();
     ball->render();
     paddle->render();
+}
+
+bool Game::loseBall() {
+    if(!extraBalls) {
+        gameOver = true;
+        return false;
+    }
+    extraBalls--;
+    return true;
 }
 
 void Game::keyPressEvent(QKeyEvent * event) {

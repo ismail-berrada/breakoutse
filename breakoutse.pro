@@ -19,11 +19,11 @@ TARGET 	  = TD2
 
 # fichiers sources/headers
 SOURCES	+= main.cpp \
-    game.cpp \
     ball.cpp \
     level.cpp \
     paddle.cpp \
-    entity.cpp
+    entity.cpp \
+    game.cpp
 HEADERS += \
     game.h \
     ball.h \

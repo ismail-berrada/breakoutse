@@ -17,6 +17,7 @@ protected:
     QVector3D position;
     QVector3D velocity;
     GLUquadric *quadric;
+    bool visible = true;
 };
 
 #endif // ENTITY_H

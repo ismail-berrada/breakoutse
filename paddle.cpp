@@ -10,13 +10,15 @@ Paddle::Paddle() {
 
 void Paddle::update(double dt) {
     if(Game::instance()->keyPressed(Qt::Key_Left)) {
-        velocity.setX(-20);
+        velocity.setX(-40);
     } else if(Game::instance()->keyPressed(Qt::Key_Right)) {
-        velocity.setX(20);
-    } else {
-        velocity.setX(0);
+        velocity.setX(40);
+    }
+    if(Game::instance()->keyPressed(Qt::Key_Space)) {
+        Game::instance()->getBall()->launch();
     }
     double side = Game::instance()->getLevel()->side;
+    velocity -= velocity * friction * dt;
     position += dt * velocity;
     if(position.x() - length / 2 < -side / 2) {
         position.setX(-side / 2 + length / 2);

@@ -19,7 +19,11 @@ public:
     Game(QWidget * parent = nullptr);
     Level* getLevel() const { return level; };
     Paddle* getPaddle() const { return paddle; };
-    bool keyPressed(int key) { return keys[key]; };
+    Ball* getBall() const { return ball; };
+    bool loseBall();
+    bool keyDown(int key) { return keys[key]; };
+    bool keyPressed(int key) { return keys[key] && !previousKeys[key]; };
+    bool isOver() const {return gameOver; };
 
 protected:
     void initializeGL();
@@ -34,9 +38,12 @@ private:
     QTimer timer;
     qint64 gameTime;
     std::map<int, bool> keys;
+    std::map<int, bool> previousKeys;
     Ball *ball;
     Level *level;
     Paddle *paddle;
+    unsigned int extraBalls = 2;
+    bool gameOver = false;
     static Game *inst;
 };
 
