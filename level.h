@@ -7,9 +7,10 @@ class Level
 public:
     Level();
     void render();
+    const double side = 30;
 
 private:
-    const double side = 30;
+
 };
 
 #endif // LEVEL_H

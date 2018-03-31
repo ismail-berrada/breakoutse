@@ -1,23 +1,25 @@
 #include "ball.h"
+#include "game.h"
+#include "level.h"
 
 Ball::Ball() {
     velocity = QVector3D(20, 0, 10);
 }
 
 void Ball::update(double dt) {
-    const double side = 15;
-    if(position.x() - radius < -side) {
-        position.setX(-side + radius);
+    double side = Game::instance()->getLevel()->side;
+    if(position.x() - radius < -side * .5) {
+        position.setX(-side * .5 + radius);
         velocity.setX(-velocity.x());
-    } else if(position.x() + radius > side) {
-        position.setX(side - radius);
+    } else if(position.x() + radius > side * .5) {
+        position.setX(side * .5 - radius);
         velocity.setX(-velocity.x());
     }
-    if(position.z() - radius < -side) {
-        position.setZ(-side + radius);
+    if(position.z() - radius < -side * .5) {
+        position.setZ(-side * .5 + radius);
         velocity.setZ(-velocity.z());
-    } else if(position.z() + radius > side) {
-        position.setZ(side - radius);
+    } else if(position.z() + radius > side * .5) {
+        position.setZ(side * .5 - radius);
         velocity.setZ(-velocity.z());
     }
     position += velocity * dt;

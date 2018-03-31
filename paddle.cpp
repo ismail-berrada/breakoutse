@@ -1,25 +1,69 @@
 #include "paddle.h"
 #include "game.h"
+#include "level.h"
 #include <iostream>
 
 Paddle::Paddle() {
-
+    position.setZ(-Game::instance()->getLevel()->side * .5);
 }
 
 void Paddle::update(double dt) {
     if(Game::instance()->keyPressed(Qt::Key_Left)) {
-        velocity.setX(-3);
+        velocity.setX(-20);
     } else if(Game::instance()->keyPressed(Qt::Key_Right)) {
-        velocity.setX(3);
+        velocity.setX(20);
     } else {
         velocity.setX(0);
     }
+    double side = Game::instance()->getLevel()->side;
     position += dt * velocity;
-    std::cout << position.x() << " " << position.y() << " " << position.z() << std::endl;
+    if(position.x() - length / 2 < -side / 2) {
+        position.setX(-side / 2 + length / 2);
+    } else if(position.x() + length / 2 > side / 2) {
+        position.setX(side / 2 - length / 2);
+    }
 }
 
 void Paddle::render() {
     glPopMatrix();
     glTranslated(position.x(), position.y(), position.z());
-    gluCylinder(quadric, 1, 1, 4, 10, 4);
+    glBegin(GL_QUADS);
+
+    glColor3f(1, 0, 0);
+    glVertex3d(-length/2, -thickness/2, -thickness/2);
+    glVertex3d(length/2, -thickness/2, -thickness/2);
+    glVertex3d(length/2, thickness/2, -thickness/2);
+    glVertex3d(-length/2, thickness/2, -thickness/2);
+
+    glColor3f(1, 1, 0);
+    glVertex3d(-length/2, -thickness/2, -thickness/2);
+    glVertex3d(length/2, -thickness/2, -thickness/2);
+    glVertex3d(length/2, -thickness/2, thickness/2);
+    glVertex3d(-length/2, -thickness/2, thickness/2);
+
+    glColor3f(1, 0, 1);
+    glVertex3d(-length/2, -thickness/2, -thickness/2);
+    glVertex3d(-length/2, thickness/2, -thickness/2);
+    glVertex3d(-length/2, thickness/2, thickness/2);
+    glVertex3d(-length/2, -thickness/2, thickness/2);
+
+    glColor3f(0, 1, 1);
+    glVertex3d(-length/2, -thickness/2, thickness/2);
+    glVertex3d(length/2, -thickness/2, thickness/2);
+    glVertex3d(length/2, thickness/2, thickness/2);
+    glVertex3d(-length/2, thickness/2, thickness/2);
+
+    glColor3f(0, 1, 0);
+    glVertex3d(-length/2, thickness/2, -thickness/2);
+    glVertex3d(length/2, thickness/2, -thickness/2);
+    glVertex3d(length/2, thickness/2, thickness/2);
+    glVertex3d(-length/2, thickness/2, thickness/2);
+
+    glColor3f(0, 0, 1);
+    glVertex3d(length/2, -thickness/2, -thickness/2);
+    glVertex3d(length/2, thickness/2, -thickness/2);
+    glVertex3d(length/2, thickness/2, thickness/2);
+    glVertex3d(length/2, -thickness/2, thickness/2);
+
+    glEnd();
 }

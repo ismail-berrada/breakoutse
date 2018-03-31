@@ -59,7 +59,8 @@ void Game::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     double a = sin(gameTime * .003);
-    gluLookAt(0, 20, -10, 0, 0, 0, 0, 1, 0);
+    //gluLookAt(paddle->getPosition().x(), 15, -level->side * .6, ball->getPosition().x(), ball->getPosition().y(), ball->getPosition().z(), 0, 1, 0);
+    gluLookAt(0, 15, -level->side * .6, 0, 0, 0, 0, 1, 0);
     glPushMatrix();
     level->render();
     ball->render();
