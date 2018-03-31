@@ -3,15 +3,18 @@
 
 #include "entity.h"
 
+class Ball;
+
 class Paddle : public Entity
 {
 public:
     Paddle();
     void update(double dt);
     void render();
+    double getCollision(const Ball& ball);
 
 private:
-    const double length = 4;
+    const double length = 6;
     const double thickness = 1;
 };
 

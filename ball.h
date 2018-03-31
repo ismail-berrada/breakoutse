@@ -10,6 +10,8 @@ public:
     Ball();
     void update(double dt);
     void render();
+    void spawn();
+    double getRadius() const {return radius;};
 
 private:
     double speed = .01;

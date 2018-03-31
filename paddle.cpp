@@ -1,10 +1,11 @@
 #include "paddle.h"
 #include "game.h"
 #include "level.h"
+#include "ball.h"
 #include <iostream>
 
 Paddle::Paddle() {
-    position.setZ(-Game::instance()->getLevel()->side * .5);
+    position.setZ(Game::instance()->getLevel()->side * .5);
 }
 
 void Paddle::update(double dt) {
@@ -66,4 +67,12 @@ void Paddle::render() {
     glVertex3d(length/2, -thickness/2, thickness/2);
 
     glEnd();
+}
+
+double Paddle::getCollision(const Ball& ball) {
+    double radius = ball.getRadius();
+    double ballX = ball.getPosition().x();
+    double minX = position.x() - length / 2 - radius;
+    double maxX = position.x() + length / 2 + radius;
+    return (ballX - minX) / (maxX - minX) * 2 - 1;
 }

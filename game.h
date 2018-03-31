@@ -17,7 +17,8 @@ class Game : public QGLWidget {
 public:
     static Game* instance();
     Game(QWidget * parent = nullptr);
-    Level* getLevel() { return level;};
+    Level* getLevel() const { return level; };
+    Paddle* getPaddle() const { return paddle; };
     bool keyPressed(int key) { return keys[key]; };
 
 protected:

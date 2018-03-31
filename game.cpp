@@ -47,7 +47,7 @@ void Game::resizeGL(int width, int height) {
 
 void Game::update() {
     qint64 now = QDateTime::currentMSecsSinceEpoch();
-    double dt = (gameTime - now) / 1000.;
+    double dt = (now - gameTime) / 1000.;
     gameTime = now;
     paddle->update(dt);
     ball->update(dt);
@@ -59,8 +59,8 @@ void Game::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     double a = sin(gameTime * .003);
-    //gluLookAt(paddle->getPosition().x(), 15, -level->side * .6, ball->getPosition().x(), ball->getPosition().y(), ball->getPosition().z(), 0, 1, 0);
-    gluLookAt(0, 15, -level->side * .6, 0, 0, 0, 0, 1, 0);
+    //gluLookAt(paddle->getPosition().x(), 15, level->side * .6, ball->getPosition().x(), ball->getPosition().y(), ball->getPosition().z(), 0, 1, 0);
+    gluLookAt(0, 15, level->side * .6, 0, 0, 0, 0, 1, 0);
     glPushMatrix();
     level->render();
     ball->render();

@@ -11,7 +11,7 @@ public:
     ~Entity();
     virtual void update(double dt) = 0;
     virtual void render() = 0;
-    QVector3D getPosition() {return position;};
+    QVector3D getPosition() const {return position;};
 
 protected:
     QVector3D position;
