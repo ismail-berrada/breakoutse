@@ -50,6 +50,7 @@ void Ball::render() {
     if(!visible) return;
     glTranslated(position.x(), position.y(), position.z());
     gluSphere(quadric, radius, 30, 30);
+    glColor3d(1, 1, 1);
 }
 
 void Ball::spawn() {

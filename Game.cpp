@@ -21,6 +21,7 @@ Game* Game::instance() {
 
 Game::Game(QWidget * parent) : QGLWidget(parent) {
     Game::inst = this;
+    glEnable(GL_TEXTURE_2D);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
     connect(&timer,  &QTimer::timeout, [&] {
@@ -42,7 +43,7 @@ void Game::resizeGL(int width, int height) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(100, width / (double)height, .01, 1000);
+    gluPerspective(85, width / (double)height, .01, 1000);
 }
 
 void Game::update() {
@@ -61,7 +62,7 @@ void Game::paintGL() {
     glLoadIdentity();
     double a = sin(gameTime * .003);
     //gluLookAt(paddle->getPosition().x(), 15, level->side * .6, ball->getPosition().x(), ball->getPosition().y(), ball->getPosition().z(), 0, 1, 0);
-    gluLookAt(0, 15, level->side * .6, 0, 0, 0, 0, 1, 0);
+    gluLookAt(0, 20, level->side * .4, 0, 0, 0, 0, 1, 0);
     glPushMatrix();
     level->render();
     ball->render();

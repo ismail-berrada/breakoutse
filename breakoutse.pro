@@ -30,3 +30,6 @@ HEADERS += \
     level.h \
     paddle.h \
     entity.h
+
+RESOURCES += \
+    resources.qrc
