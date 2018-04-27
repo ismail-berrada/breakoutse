@@ -3,5 +3,24 @@
         <file>tileset.png</file>
         <file>wall.png</file>
         <file>ground.png</file>
+        <file>textures/brick.png</file>
+        <file>textures/ground.png</file>
+        <file>textures/tileset.png</file>
+        <file>textures/wall.png</file>
+        <file>.gitignore</file>
+        <file>ball.cpp</file>
+        <file>ball.h</file>
+        <file>breakoutse.pro</file>
+        <file>brick.cpp</file>
+        <file>brick.h</file>
+        <file>entity.cpp</file>
+        <file>entity.h</file>
+        <file>Game.cpp</file>
+        <file>game.h</file>
+        <file>level.cpp</file>
+        <file>level.h</file>
+        <file>main.cpp</file>
+        <file>paddle.cpp</file>
+        <file>paddle.h</file>
     </qresource>
 </RCC>
