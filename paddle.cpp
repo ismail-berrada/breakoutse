@@ -6,6 +6,7 @@
 
 Paddle::Paddle() {
     position.setZ(Game::instance()->getLevel()->side * .5);
+    size = QVector3D(6, 1, 1);
 }
 
 void Paddle::update(double dt) {
@@ -30,45 +31,7 @@ void Paddle::update(double dt) {
 void Paddle::render() {
     glPopMatrix();
     glTranslated(position.x(), position.y(), position.z());
-    glBegin(GL_QUADS);
-
-    glColor3f(1, 0, 0);
-    glVertex3d(-length/2, -thickness/2, -thickness/2);
-    glVertex3d(length/2, -thickness/2, -thickness/2);
-    glVertex3d(length/2, thickness/2, -thickness/2);
-    glVertex3d(-length/2, thickness/2, -thickness/2);
-
-    glColor3f(1, 1, 0);
-    glVertex3d(-length/2, -thickness/2, -thickness/2);
-    glVertex3d(length/2, -thickness/2, -thickness/2);
-    glVertex3d(length/2, -thickness/2, thickness/2);
-    glVertex3d(-length/2, -thickness/2, thickness/2);
-
-    glColor3f(1, 0, 1);
-    glVertex3d(-length/2, -thickness/2, -thickness/2);
-    glVertex3d(-length/2, thickness/2, -thickness/2);
-    glVertex3d(-length/2, thickness/2, thickness/2);
-    glVertex3d(-length/2, -thickness/2, thickness/2);
-
-    glColor3f(0, 1, 1);
-    glVertex3d(-length/2, -thickness/2, thickness/2);
-    glVertex3d(length/2, -thickness/2, thickness/2);
-    glVertex3d(length/2, thickness/2, thickness/2);
-    glVertex3d(-length/2, thickness/2, thickness/2);
-
-    glColor3f(0, 1, 0);
-    glVertex3d(-length/2, thickness/2, -thickness/2);
-    glVertex3d(length/2, thickness/2, -thickness/2);
-    glVertex3d(length/2, thickness/2, thickness/2);
-    glVertex3d(-length/2, thickness/2, thickness/2);
-
-    glColor3f(0, 0, 1);
-    glVertex3d(length/2, -thickness/2, -thickness/2);
-    glVertex3d(length/2, thickness/2, -thickness/2);
-    glVertex3d(length/2, thickness/2, thickness/2);
-    glVertex3d(length/2, -thickness/2, thickness/2);
-
-    glEnd();
+    drawBox();
 }
 
 double Paddle::getCollision(const Ball& ball) {

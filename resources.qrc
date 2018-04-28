@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/textures">
-        <file>tileset.png</file>
-        <file>wall.png</file>
-        <file>ground.png</file>
+        <file>textures/ground.png</file>
+        <file>textures/tileset.png</file>
+        <file>textures/wall.png</file>
+        <file>textures/brick.png</file>
     </qresource>
 </RCC>

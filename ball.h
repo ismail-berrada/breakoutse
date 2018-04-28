@@ -4,6 +4,7 @@
 #include <QVector3D>
 
 #include "entity.h"
+class Brick;
 
 class Ball : public Entity {
 public:
@@ -12,6 +13,7 @@ public:
     void render();
     void spawn();
     void launch();
+    bool segmentIntersection(QVector2D a, QVector2D b, QVector2D p, QVector2D q);
     double getRadius() const {return radius;};
 
 private:

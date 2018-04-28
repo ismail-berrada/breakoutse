@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDateTime>
+#include "math.h"
 #include "ball.h"
 #include "level.h"
 #include "paddle.h"
@@ -24,15 +25,15 @@ Game::Game(QWidget * parent) : QGLWidget(parent) {
     glEnable(GL_TEXTURE_2D);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
     move(QApplication::desktop()->screen()->rect().center() - rect().center());
+    gameTime = QDateTime::currentMSecsSinceEpoch();
+    level = new Level();
+    ball = new Ball();
+    paddle = new Paddle();
     connect(&timer,  &QTimer::timeout, [&] {
         update();
     });
     timer.setInterval(1.0 / FPS);
     timer.start();
-    gameTime = QDateTime::currentMSecsSinceEpoch();
-    level = new Level();
-    ball = new Ball();
-    paddle = new Paddle();
 }
 
 void Game::initializeGL() {
@@ -60,9 +61,8 @@ void Game::paintGL() {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    double a = sin(gameTime * .003);
-    //gluLookAt(paddle->getPosition().x(), 15, level->side * .6, ball->getPosition().x(), ball->getPosition().y(), ball->getPosition().z(), 0, 1, 0);
-    gluLookAt(0, 20, level->side * .4, 0, 0, 0, 0, 1, 0);
+    double px = paddle->getPosition().x();
+    gluLookAt(px * .3, 20, level->side * .4 + fabs(px * px * .02), px * .1, 0, 0, 0, 1, 0);
     glPushMatrix();
     level->render();
     ball->render();

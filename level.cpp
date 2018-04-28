@@ -1,11 +1,27 @@
 #include "level.h"
+#include "brick.h"
 #include <QGLWidget>
 
 Level::Level() {
-    wall = QGLWidget::convertToGLFormat(QImage(":/textures/wall.png"));
-    ground = QGLWidget::convertToGLFormat(QImage(":/textures/ground.png"));
+    wall = QGLWidget::convertToGLFormat(QImage(":/textures/textures/wall.png"));
+    ground = QGLWidget::convertToGLFormat(QImage(":/textures/textures/ground.png"));
     glGenTextures(1, &wallTexture);
     glGenTextures(1, &groundTexture);
+    for(int i = 0; i < 12; i++) {
+        for(int j = 0; j < 10; j++) {
+            bricks.push_back(new Brick(QVector3D(-13.5 + j * 3, 1, -13.5 + i)));
+        }
+    }
+}
+
+Level::~Level() {
+    bricks.clear();
+}
+
+void Level::update(double dt) {
+    for(auto b : bricks) {
+        b->update(dt);
+    }
 }
 
 void Level::render() {
@@ -69,4 +85,8 @@ void Level::render() {
 
     glEnd();
     glBindTexture(GL_TEXTURE_2D, NULL);
+
+    for(auto b : bricks) {
+        b->render();
+    }
 }

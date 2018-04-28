@@ -23,13 +23,15 @@ SOURCES	+= main.cpp \
     level.cpp \
     paddle.cpp \
     entity.cpp \
-    game.cpp
+    game.cpp \
+    brick.cpp
 HEADERS += \
     game.h \
     ball.h \
     level.h \
     paddle.h \
-    entity.h
+    entity.h \
+    brick.h
 
 RESOURCES += \
     resources.qrc
