@@ -5,4 +5,7 @@
         <file>textures/wall.png</file>
         <file>textures/brick.png</file>
     </qresource>
+    <qresource prefix="/fonts">
+        <file>fonts/XLMono.ttf</file>
+    </qresource>
 </RCC>

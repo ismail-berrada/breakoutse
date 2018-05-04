@@ -10,6 +10,8 @@
 class Ball;
 class Level;
 class Paddle;
+class UI;
+class Text3D;
 
 class Game : public QGLWidget {
     Q_OBJECT
@@ -20,6 +22,10 @@ public:
     Level* getLevel() const { return level; };
     Paddle* getPaddle() const { return paddle; };
     Ball* getBall() const { return ball; };
+    QFont& getFont() { return font; };
+    unsigned int getScore() const { return score; };
+    unsigned int getExtraBalls() const { return extraBalls; };
+    void addScore(unsigned int val) { score += val; };
     bool loseBall();
     bool keyDown(int key) { return keys[key]; };
     bool keyPressed(int key) { return keys[key] && !previousKeys[key]; };
@@ -39,9 +45,12 @@ private:
     qint64 gameTime;
     std::map<int, bool> keys;
     std::map<int, bool> previousKeys;
+    QFont font;
     Ball *ball;
     Level *level;
     Paddle *paddle;
+    UI *ui;
+    unsigned int score = 0;
     unsigned int extraBalls = 2;
     bool gameOver = false;
     static Game *inst;

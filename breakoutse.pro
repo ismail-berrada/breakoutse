@@ -24,14 +24,18 @@ SOURCES	+= main.cpp \
     paddle.cpp \
     entity.cpp \
     game.cpp \
-    brick.cpp
+    brick.cpp \
+    text3d.cpp \
+    ui.cpp
 HEADERS += \
     game.h \
     ball.h \
     level.h \
     paddle.h \
     entity.h \
-    brick.h
+    brick.h \
+    text3d.h \
+    ui.h
 
 RESOURCES += \
     resources.qrc

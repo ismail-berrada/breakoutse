@@ -24,15 +24,15 @@ void Ball::update(double dt) {
             velocity.setX(-velocity.x());
             hit = true;
         }
-        if(position.z() - radius < -side * .5) {
-            position.setZ(-side * .5 + radius);
-            velocity.setZ(-velocity.z());
-            hit = true;
-        } else if(position.z() + radius > side * .8) {
+        if(position.z() + radius > side * .8) {
             visible = false;
             if(Game::instance()->loseBall()) {
                 spawn();
             }
+        } else if(position.z() - radius < -side * .5) {
+            position.setZ(-side * .5 + radius);
+            velocity.setZ(-velocity.z());
+            hit = true;
         } else if(position.z() + radius > side * .5) {
             double collision = Game::instance()->getPaddle()->getCollision(*this);
             if(collision >= -1 && collision <= 1) {
@@ -44,7 +44,7 @@ void Ball::update(double dt) {
         }
         QVector3D nextPos = position + velocity * dt;
         std::vector<Brick*>& bricks = Game::instance()->getLevel()->getBricks();
-        bool collided;
+        bool collided, cx = false, cz = false;
         do {
             collided = false;
             for(std::vector<Brick*>::iterator it = bricks.begin(); it != bricks.end(); ++it) {
@@ -61,29 +61,38 @@ void Ball::update(double dt) {
                 QVector2D q = ballCenter + ballDeltaPos;
                 if(segmentIntersection(p, q, a, b) ||
                         segmentIntersection(p, q, c, d)) {
-                    velocity.setZ(-velocity.z());
+                    cz = true;
                     collided = true;
                 }
                 if(segmentIntersection(p, q, b, c) ||
                         segmentIntersection(p, q, d, a)) {
-                    velocity.setX(-velocity.x());
+                    cx = true;
                     collided = true;
                 }
                 if(collided) {
                     bricks.erase(it);
+                    Game::instance()->addScore(50);
                     break;
                 }
             }
         } while(collided);
+        if(cx) {
+            velocity.setX(-velocity.x());
+        }
+        if(cz) {
+            velocity.setZ(-velocity.z());
+        }
         position += velocity * dt;
     }
 }
 
 void Ball::render() {
     if(!visible) return;
+    glPushMatrix();
     glTranslated(position.x(), position.y(), position.z());
     gluSphere(quadric, radius, 30, 30);
     glColor3d(1, 1, 1);
+    glPopMatrix();
 }
 
 void Ball::spawn() {
@@ -97,7 +106,7 @@ void Ball::launch() {
     if(!stuck) {
         return;
     }
-    velocity = QVector3D(rand() % 100 / 20., 0, -20);
+    velocity = QVector3D(rand() % 100 / 20. * speed, 0, -speed * 20);
     stuck = false;
 }
 

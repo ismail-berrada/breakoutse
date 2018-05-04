@@ -15,7 +15,7 @@ Brick::Brick(QVector3D position) : Entity(position) {
 }
 
 Brick::~Brick() {
-    std::cout << ("Brick deleted") << std::endl;
+
 }
 
 void Brick::update(double dt) {
@@ -30,6 +30,6 @@ void Brick::render() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     drawTexturedBox();
-    glBindTexture(GL_TEXTURE_2D, NULL);
     glPopMatrix();
+    glBindTexture(GL_TEXTURE_2D, NULL);
 }
