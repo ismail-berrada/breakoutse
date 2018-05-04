@@ -87,9 +87,9 @@ void Game::paintGL() {
 
     glEnable(GL_TEXTURE_2D);
     level->render();
+    ball->render();
     glDisable(GL_TEXTURE_2D);
     ui->render();
-    ball->render();
     paddle->render();
 }
 

@@ -18,9 +18,12 @@ public:
 
 private:
     QVector3D acceleration;
-    double speed = .8;
-    double radius = .5;
+    double speed = .6;
+    double radius = .8;
+    double angle = 0;
     bool stuck;
+    static GLuint texture;
+    static QImage image;
 };
 
 #endif // BALL_H

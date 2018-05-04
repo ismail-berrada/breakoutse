@@ -4,6 +4,7 @@
         <file>textures/tileset.png</file>
         <file>textures/wall.png</file>
         <file>textures/brick.png</file>
+        <file>textures/ball.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>fonts/XLMono.ttf</file>

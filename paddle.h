@@ -14,7 +14,6 @@ public:
     double getCollision(const Ball& ball);
 
 private:
-    const double length = 6;
     const double thickness = 1;
     const double friction = 4;
 };

@@ -21,10 +21,10 @@ void Paddle::update(double dt) {
     double side = Game::instance()->getLevel()->side;
     velocity -= velocity * friction * dt;
     position += dt * velocity;
-    if(position.x() - length / 2 < -side / 2) {
-        position.setX(-side / 2 + length / 2);
-    } else if(position.x() + length / 2 > side / 2) {
-        position.setX(side / 2 - length / 2);
+    if(position.x() - size.x() / 2 < -side / 2) {
+        position.setX(-side / 2 + size.x() / 2);
+    } else if(position.x() + size.x() / 2 > side / 2) {
+        position.setX(side / 2 - size.x() / 2);
     }
 }
 
@@ -37,7 +37,7 @@ void Paddle::render() {
 double Paddle::getCollision(const Ball& ball) {
     double radius = ball.getRadius();
     double ballX = ball.getPosition().x();
-    double minX = position.x() - length / 2 - radius;
-    double maxX = position.x() + length / 2 + radius;
+    double minX = position.x() - size.x() / 2 - radius;
+    double maxX = position.x() + size.x() / 2 + radius;
     return (ballX - minX) / (maxX - minX) * 2 - 1;
 }

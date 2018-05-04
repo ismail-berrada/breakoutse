@@ -4,11 +4,19 @@
 #include "paddle.h"
 #include <iostream>
 
+GLuint Ball::texture = 0;
+QImage Ball::image;
+
 Ball::Ball() {
+    if(!texture) {
+        image = QGLWidget::convertToGLFormat(QImage(":/textures/textures/ball.png"));
+        glGenTextures(1, &texture);
+    }
     spawn();
 }
 
 void Ball::update(double dt) {
+    angle += dt * 360;
     if(stuck) {
         position.setX(Game::instance()->getPaddle()->getPosition().x());
         position.setZ(Game::instance()->getPaddle()->getPosition().z() - radius);
@@ -90,7 +98,15 @@ void Ball::render() {
     if(!visible) return;
     glPushMatrix();
     glTranslated(position.x(), position.y(), position.z());
+    glRotated(angle, 1, 1, 0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits() );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glColor3d(1, 1, 1);
     gluSphere(quadric, radius, 30, 30);
+    gluQuadricTexture(quadric, GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, NULL);
     glColor3d(1, 1, 1);
     glPopMatrix();
 }
