@@ -6,6 +6,7 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QVector3D>
 #include "motiondetector.h"
 
 class Ball;
@@ -13,6 +14,10 @@ class Level;
 class Paddle;
 class UI;
 class Text3D;
+
+enum GameState {
+    Menu, MovingIn, Building, Playing, MovingOut
+};
 
 class Game : public QGLWidget {
     Q_OBJECT
@@ -63,6 +68,15 @@ private:
     unsigned int score = 0;
     unsigned int extraBalls = 2;
     bool gameOver = false;
+    double transitionTime;
+    double transitionTimer;
+    GameState state = Menu;
+    QVector3D cameraPosition;
+    QVector3D cameraLookAt;
+    QVector3D gameLookAt;
+    QVector3D gameCameraPosition;
+    QVector3D menuLookAt;
+    QVector3D menuCameraPosition;
     static Game *inst;
 };
 

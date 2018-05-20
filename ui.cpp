@@ -6,13 +6,13 @@
 #include <iomanip>
 
 UI::UI() {
-    scoreText = new Text3D();
-    scoreText->initFont(Game::instance()->getFont(), .05);
+    text = new Text3D();
+    text->initFont(Game::instance()->getFont(), .05);
     score = 0;
 }
 
 UI::~UI() {
-    delete scoreText;
+    delete text;
 }
 
 void UI::update(double dt) {
@@ -32,15 +32,15 @@ void UI::render() {
     glPushMatrix();
     glScaled(.5, .5, .5);
     glColor3f(1, 1, 1);
-    scoreText->print(QString(scoreString.c_str()));
+    text->print(QString(scoreString.c_str()));
     glColor3f(1, 1, 0);
     glTranslated(0, 0, -2);
-    scoreText->print(QString(scoreString.c_str()));
+    text->print(QString(scoreString.c_str()));
     glPopMatrix();
 
     glTranslated(0, 6, 0);
     glScaled(.3, .3, .3);
-    scoreText->print("x0");
+    text->print("x0");
 
     glPopMatrix();
 }

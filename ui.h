@@ -11,7 +11,7 @@ public:
     void render();
 
 private:
-    Text3D *scoreText;
+    Text3D *text;
     double score;
     double angle = 0;
 };
