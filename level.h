@@ -11,9 +11,11 @@ class Level {
 public:
     Level();
     ~Level();
+    void build();
     void update(double dt);
     void render();
     std::vector<Brick*>& getBricks() {return bricks;};
+    int getTotalBricks() {return totalBricks; };
     const double side = 30;
 
 private:
@@ -22,6 +24,7 @@ private:
     GLuint wallTexture;
     GLuint groundTexture;
     std::vector<Brick*> bricks;
+    int totalBricks;
 };
 
 #endif // LEVEL_H

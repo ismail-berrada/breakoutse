@@ -13,7 +13,7 @@ Paddle::Paddle() {
         glGenTextures(1, &texture);
     }
     position.setZ(Game::instance()->getLevel()->side * .5);
-    size = QVector3D(6, 1, 1);
+    size = QVector3D(8, 1, 1);
 }
 
 void Paddle::update(double dt) {
@@ -24,7 +24,7 @@ void Paddle::update(double dt) {
         move(true);
     }
     if(Game::instance()->keyPressed(Qt::Key_Space)) {
-        Game::instance()->getBall()->launch();
+        stop();
     }
     double side = Game::instance()->getLevel()->side;
     velocity -= velocity * friction * dt;
@@ -38,6 +38,11 @@ void Paddle::update(double dt) {
 
 void Paddle::move(bool right) {
     velocity.setX((right * 2 - 1) * 40);
+}
+
+void Paddle::stop() {
+    velocity.setX(0);
+    Game::instance()->getBall()->launch();
 }
 
 void Paddle::render() {
@@ -58,4 +63,8 @@ double Paddle::getCollision(const Ball& ball) {
     double minX = position.x() - size.x() / 2 - radius;
     double maxX = position.x() + size.x() / 2 + radius;
     return (ballX - minX) / (maxX - minX) * 2 - 1;
+}
+
+void Paddle::reset() {
+    position.setX(0);
 }

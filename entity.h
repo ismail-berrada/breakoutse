@@ -16,6 +16,7 @@ public:
     virtual void render() = 0;
     QVector3D getPosition() const {return position;};
     QVector3D getSize() const {return size;};
+    void setPosition(QVector3D position) {this->position = position;};
 
 protected:
     QVector3D position;

@@ -25,6 +25,7 @@ class Game : public QGLWidget {
 public:
     static Game* instance();
     Game(MotionDetector &motionDetector);
+    void quitMenu();
     Level* getLevel() const { return level; };
     Paddle* getPaddle() const { return paddle; };
     Ball* getBall() const { return ball; };
@@ -33,6 +34,7 @@ public:
     unsigned int getExtraBalls() const { return extraBalls; };
     void addScore(unsigned int val) { score += val; };
     bool loseBall();
+    void win();
     bool keyDown(int key) { return keys[key]; };
     bool keyPressed(int key) { return keys[key] && !previousKeys[key]; };
     bool isOver() const {return gameOver; };

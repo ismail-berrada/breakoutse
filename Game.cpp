@@ -53,13 +53,15 @@ Game::Game(MotionDetector &motionDetector) : QGLWidget() {
     connect(&motionTimer,  &QTimer::timeout, [&] {
         emit onUpdate();
     });
-    motionTimer.setInterval(.1);
+    motionTimer.setInterval(1.0 / FPS);
     motionTimer.start();
 
-    menuCameraPosition = QVector3D(0, 25, -level->side * .2);
+    menuCameraPosition = QVector3D(0, 25, level->side * .2);
     menuLookAt = QVector3D(0, 25, -level->side * .5);
-    gameCameraPosition = QVector3D(0, 20, level->side * .4);
-    gameLookAt = QVector3D(0, 0, 0);
+    gameCameraPosition = QVector3D(0, 28, level->side * .7);
+    gameLookAt = QVector3D(0, 0, -level->side * .1);
+    cameraPosition = menuCameraPosition;
+    cameraLookAt = menuLookAt;
 
     transitionTime = 2;
     transitionTimer = transitionTime;
@@ -74,7 +76,7 @@ void Game::resizeGL(int width, int height) {
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(80, width / (double)height, .01, 1000);
+    gluPerspective(60, width / (double)height, .01, 1000);
 }
 
 void Game::update() {
@@ -83,7 +85,6 @@ void Game::update() {
     gameTime = now;
     if(state == Playing) {
         paddle->update(dt);
-        ball->update(dt);
     } else if(state == MovingIn || state == MovingOut) {
         transitionTimer -= dt;
         if(transitionTimer < 0) {
@@ -101,9 +102,11 @@ void Game::update() {
         }
     } else if(state == Menu) {
         if(keyPressed(Qt::Key_Space)) {
-            state = MovingIn;
-            transitionTimer = transitionTime;
+            quitMenu();
         }
+    }
+    if(state == MovingIn || state == Playing) {
+        ball->update(dt);
     }
     ui->update(dt);
     updateGL();
@@ -115,7 +118,6 @@ void Game::paintGL() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     double px = paddle->getPosition().x() * .5;
-    double cy = 20;
     if(state == Menu) {
         gluLookAt(menuCameraPosition.x(), menuCameraPosition.y(), menuCameraPosition.z(),
                  menuLookAt.x(), menuLookAt.y(), menuLookAt.z(),
@@ -125,17 +127,26 @@ void Game::paintGL() {
                   cameraLookAt.x(), cameraLookAt.y(), cameraLookAt.z(),
                   0, 1, 0);
     } else if(state == Playing) {
-        gluLookAt(px * .3, cy, level->side * .4 + fabs(px * px * .02), 0, 0, 0, 0, 1, 0);
+        gluLookAt(gameCameraPosition.x() + px * .3, gameCameraPosition.y(), gameCameraPosition.z() + fabs(px * px * .02),
+                  gameLookAt.x(), gameLookAt.y(), gameLookAt.z(), 0, 1, 0);
     }
-    glPushMatrix();
-
-    glEnable(GL_TEXTURE_2D);
-    level->render();
-    ball->render();
-    paddle->render();
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
     ui->render();
+    glPushMatrix();
+    level->render();
+    ball->render(false);
+    paddle->render();
+
+    glPopMatrix();
+}
+
+void Game::quitMenu() {
+    state = MovingIn;
+    transitionTimer = transitionTime;
+    level->build();
+    paddle->reset();
+    ball->spawn();
+    score = 0;
+    extraBalls = 3;
 }
 
 bool Game::loseBall() {
@@ -146,6 +157,10 @@ bool Game::loseBall() {
     }
     extraBalls--;
     return true;
+}
+
+void Game::win() {
+    state = MovingOut;
 }
 
 void Game::keyPressEvent(QKeyEvent * event) {
@@ -166,6 +181,12 @@ void Game::motionDetected(MotionType motionType) {
     } else if(motionType == Right) {
         if(state == Playing) {
             paddle->move(true);
+        }
+    } else if(motionType == Stop) {
+        if(state == Playing) {
+            paddle->stop();
+        } else {
+            quitMenu();
         }
     }
 }

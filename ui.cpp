@@ -1,6 +1,8 @@
 #include "ui.h"
 #include "text3d.h"
 #include "game.h"
+#include "level.h"
+#include "ball.h"
 #include <sstream>
 #include <string>
 #include <iomanip>
@@ -22,10 +24,21 @@ void UI::update(double dt) {
 }
 
 void UI::render() {
+    glDisable(GL_TEXTURE_2D);
+
     std::stringstream ss;
     std::string scoreString;
     ss << std::setfill('0') << std::setw(5) << ceil(score);
     ss >> scoreString;
+
+    // display menu
+    glPushMatrix();
+    glTranslated(0, 27, -Game::instance()->getLevel()->side * .499);
+    glScaled(.5, .5, .5);
+    text->print(QString("BreakouTSE"));
+    glPopMatrix();
+
+    //display gameplay UI
     glPushMatrix();
     glTranslated(0, 7, -8);
 
@@ -38,9 +51,17 @@ void UI::render() {
     text->print(QString(scoreString.c_str()));
     glPopMatrix();
 
-    glTranslated(0, 6, 0);
-    glScaled(.3, .3, .3);
-    text->print("x0");
-
+    glTranslated(0, 7, 0);
+    //glScaled(.3, .3, .3);
+    glEnable(GL_TEXTURE_2D);
+    int ballCount = Game::instance()->getExtraBalls();
+    double width = 5;
+    double step = width / (ballCount - 1);
+    for(int i = 0; i < ballCount; i++) {
+        glPushMatrix();
+        glTranslated((i - (double)(ballCount - 1) * .5) * width * .5, 0, 0);
+        Game::instance()->getBall()->render(true);
+        glPopMatrix();
+    }
     glPopMatrix();
 }

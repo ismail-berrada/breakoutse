@@ -50,33 +50,42 @@ void MotionDetector::updateCapture() {
                               workingRect.y + (workingRect.height - templateHeight) / 2,
                               templateWidth, templateHeight);
             Mat templateImage(frame1Gray, templateRect);
-            matchTemplate(Mat(frame2Gray, workingRect), templateImage, resultImage, TM_CCORR_NORMED);
+            matchTemplate(frame2Gray, templateImage, resultImage, TM_CCORR_NORMED);
             double minVal, maxVal; Point minLoc, maxLoc;
             minMaxLoc(resultImage, &minVal, &maxVal, &minLoc, &maxLoc);
             Point vect(maxLoc.x + (templateWidth - workingRect.width) / 2, maxLoc.y + (templateHeight - workingRect.height) / 2);
+            vect -= Point(workingRect.x, workingRect.y);
             vectors.push_back(vect);
             rectangle(frame2, Rect(j * divWidth, i * divHeight, divWidth + 1, divHeight + 1), Scalar(255, 255, 0), 1);
-            Point p(center.x + vect.x, center.y + vect.y);
-            arrowedLine(frame2, center, p, Scalar(255, 255, 255), 1);
+            Point p(vect.x, vect.y);
+            arrowedLine(frame2, center, center + p, Scalar(255, 255, 255), 1);
         }
     }
     imshow("Camera", frame2);
     swap(frame1Gray, frame2Gray);
-    int nbLeft = 0, nbRight = 0;
+    int nbLeft = 0, nbRight = 0, nbUp = 0;
     for(v : vectors) {
-        if(v.x < -30) {
+        if(v.x < -20) {
             nbLeft++;
-        } else if(v.x > 30) {
+        } else if(v.x > 20) {
             nbRight++;
+        } else if(v.y < -20) {
+            nbUp++;
         }
     }
     int total = divx * divy;
     MotionType motion = None;
     if(nbLeft * 4 > total) {
         motion = Left;
+        cout << "left" << endl;
     }
     if(nbRight * 4 > total) {
         motion = Right;
+        cout << "right" << endl;
+    }
+    if(nbUp * 4 > total) {
+        motion = Stop;
+        cout << "stop" << endl;
     }
     if(lastMotion == motion && motion != None) {
         emit motionDetected(motion);

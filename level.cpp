@@ -7,6 +7,15 @@ Level::Level() {
     ground = QGLWidget::convertToGLFormat(QImage(":/textures/textures/ground.png"));
     glGenTextures(1, &wallTexture);
     glGenTextures(1, &groundTexture);
+}
+
+Level::~Level() {
+    bricks.clear();
+}
+
+void Level::build() {
+    totalBricks = 0;
+    bricks.clear();
     for(int i = 0; i < 12; i++) {
         for(int j = 0; j < 5; j++) {
             int jj = 9 - j;
@@ -14,15 +23,12 @@ Level::Level() {
             int di = abs(i - ci), dj = abs(j - cj) + 2;
             int d = di*di + dj*dj;
             if(rand() % 70 > d) {
+                totalBricks += 2;
                 bricks.push_back(new Brick(QVector3D(-13.5 + j * 3, 0, -13.5 + i)));
                 bricks.push_back(new Brick(QVector3D(-13.5 + jj * 3, 0, -13.5 + i)));
             }
         }
     }
-}
-
-Level::~Level() {
-    bricks.clear();
 }
 
 void Level::update(double dt) {

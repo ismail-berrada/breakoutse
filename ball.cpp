@@ -46,6 +46,11 @@ void Ball::update(double dt) {
                   position.z() + radius > pad->getPosition().z() - pad->getSize().z() * .2) {
             double collision = pad->getCollision(*this);
             if(collision >= -1 && collision <= 1) {
+                if(Game::instance()->getLevel()->getBricks().size() == 0) {
+                    stuck = true;
+                    Game::instance()->win();
+                    return;
+                }
                 velocity.setZ(-speed);
                 velocity.setX(speed * collision);
                 hit = true;
@@ -88,6 +93,7 @@ void Ball::update(double dt) {
                     }
                 }
                 if(collided) {
+                    updateSpeed();
                     break;
                 }
             }
@@ -103,10 +109,6 @@ void Ball::update(double dt) {
 }
 
 void Ball::render() {
-    if(!visible) return;
-    glPushMatrix();
-    glTranslated(position.x(), position.y(), position.z());
-    glRotated(angle, 1, 1, 0);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits() );
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -116,7 +118,24 @@ void Ball::render() {
     gluQuadricTexture(quadric, GL_TRUE);
     glBindTexture(GL_TEXTURE_2D, NULL);
     glColor3d(1, 1, 1);
-    glPopMatrix();
+}
+
+void Ball::render(bool icon) {
+    if(!icon) {
+        if(!visible) {
+            return;
+        }
+        glPushMatrix();
+        glTranslated(position.x(), position.y(), position.z());
+        glRotated(angle, 1, 1, 0);
+    } else {
+        glRotated(90, 1, 1, 0);
+        glRotated(90, 1, 0, 0);
+    }
+    render();
+    if(!icon) {
+        glPopMatrix();
+    }
 }
 
 void Ball::spawn() {
@@ -124,6 +143,7 @@ void Ball::spawn() {
     velocity = QVector3D(0, 0, 0);
     stuck = true;
     visible = true;
+    updateSpeed();
 }
 
 void Ball::launch() {
@@ -138,4 +158,12 @@ bool Ball::segmentIntersection(QVector2D a, QVector2D b, QVector2D p, QVector2D 
     QVector2D ab = b - a, bp = p - b, bq = q - b, pq = q - p, qb = b - q, qa = a - q;
     return (ab.x() * bp.y() - ab.y() * bp.x() < 0) != (ab.x() * bq.y() - ab.y() * bq.x() < 0) &&
            (pq.x() * qb.y() - pq.y() * qb.x() < 0) != (pq.x() * qa.y() - pq.y() * qa.x() < 0);
+}
+
+void Ball::updateSpeed() {
+    Level *level = Game::instance()->getLevel();
+    double progress = 1 - (double)level->getBricks().size() / level->getTotalBricks();
+    speed = progress * speedMaximum + (1 - progress) * speedMinimum;
+    velocity.normalize();
+    velocity *= speed;
 }
