@@ -24,8 +24,8 @@ void Level::build() {
             int d = di*di + dj*dj;
             if(rand() % 70 > d) {
                 totalBricks += 2;
-                bricks.push_back(new Brick(QVector3D(-13.5 + j * 3, 0, -13.5 + i)));
-                bricks.push_back(new Brick(QVector3D(-13.5 + jj * 3, 0, -13.5 + i)));
+                bricks.push_back(new Brick(QVector3D(-13.5 + j * 3, -10, -13.5 + i)));
+                bricks.push_back(new Brick(QVector3D(-13.5 + jj * 3, -10, -13.5 + i)));
             }
         }
     }

@@ -65,3 +65,7 @@ void UI::render() {
     }
     glPopMatrix();
 }
+
+void UI::resetScore() {
+    score = 0;
+}

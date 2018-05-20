@@ -93,7 +93,6 @@ void Ball::update(double dt) {
                     }
                 }
                 if(collided) {
-                    updateSpeed();
                     break;
                 }
             }
@@ -143,7 +142,6 @@ void Ball::spawn() {
     velocity = QVector3D(0, 0, 0);
     stuck = true;
     visible = true;
-    updateSpeed();
 }
 
 void Ball::launch() {
@@ -160,10 +158,6 @@ bool Ball::segmentIntersection(QVector2D a, QVector2D b, QVector2D p, QVector2D 
            (pq.x() * qb.y() - pq.y() * qb.x() < 0) != (pq.x() * qa.y() - pq.y() * qa.x() < 0);
 }
 
-void Ball::updateSpeed() {
-    Level *level = Game::instance()->getLevel();
-    double progress = 1 - (double)level->getBricks().size() / level->getTotalBricks();
-    speed = progress * speedMaximum + (1 - progress) * speedMinimum;
-    velocity.normalize();
-    velocity *= speed;
+void Ball::increaseSpeed() {
+    speed += 4;
 }

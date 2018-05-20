@@ -16,14 +16,11 @@ public:
     void launch();
     bool segmentIntersection(QVector2D a, QVector2D b, QVector2D p, QVector2D q);
     double getRadius() const {return radius;};
+    void increaseSpeed();
 
 private:
-    void updateSpeed();
-
     QVector3D acceleration;
-    double speed;
-    double speedMinimum = 12;
-    double speedMaximum = 28;
+    double speed = 12;
     double radius = .8;
     double angle = 0;
     bool stuck;

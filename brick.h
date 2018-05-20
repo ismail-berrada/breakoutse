@@ -19,6 +19,8 @@ class Brick : public Entity {
 
   private:
     bool destroyed;
+    double spawnTimer;
+    double spawnTime;
     static GLuint texture;
     static QImage image;
 };

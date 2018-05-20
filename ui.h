@@ -9,6 +9,7 @@ public:
     ~UI();
     void update(double dt);
     void render();
+    void resetScore();
 
 private:
     Text3D *text;

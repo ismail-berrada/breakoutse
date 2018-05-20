@@ -12,6 +12,9 @@ Brick::Brick(QVector3D position) : Entity(position) {
         image = QGLWidget::convertToGLFormat(QImage(":/textures/textures/brick.png"));
         glGenTextures(1, &texture);
     }
+    spawnTime = .3 + .7 * rand() / (float)RAND_MAX;
+    spawnTimer = spawnTime;
+    position.setY(-10);
 }
 
 Brick::~Brick() {
@@ -19,7 +22,15 @@ Brick::~Brick() {
 }
 
 void Brick::update(double dt) {
-
+    if(spawnTimer > 0) {
+        spawnTimer -= dt;
+        if(spawnTimer < 0) {
+            position.setY(0);
+        } else {
+            double t = spawnTimer / spawnTime;
+            position.setY(-t * t * 3);
+        }
+    }
 }
 
 void Brick::render() {

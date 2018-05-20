@@ -67,4 +67,5 @@ double Paddle::getCollision(const Ball& ball) {
 
 void Paddle::reset() {
     position.setX(0);
+    velocity.setX(0);
 }

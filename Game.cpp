@@ -85,6 +85,12 @@ void Game::update() {
     gameTime = now;
     if(state == Playing) {
         paddle->update(dt);
+        level->update(dt);
+        if(keyPressed(Qt::Key_C) && level->getBricks().size()) {
+            int i = rand() % level->getBricks().size();
+            level->getBricks().erase(level->getBricks().begin() + i);
+            Game::instance()->addScore(50);
+        }
     } else if(state == MovingIn || state == MovingOut) {
         transitionTimer -= dt;
         if(transitionTimer < 0) {
@@ -145,6 +151,7 @@ void Game::quitMenu() {
     level->build();
     paddle->reset();
     ball->spawn();
+    ui->resetScore();
     score = 0;
     extraBalls = 3;
 }
@@ -160,7 +167,8 @@ bool Game::loseBall() {
 }
 
 void Game::win() {
-    state = MovingOut;
+    ball->increaseSpeed();
+    level->build();
 }
 
 void Game::keyPressEvent(QKeyEvent * event) {
