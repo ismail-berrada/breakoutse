@@ -6,6 +6,7 @@
 #include <QWheelEvent>
 #include <QKeyEvent>
 #include <QTimer>
+#include "motiondetector.h"
 
 class Ball;
 class Level;
@@ -18,7 +19,7 @@ class Game : public QGLWidget {
 
 public:
     static Game* instance();
-    Game(QWidget * parent = nullptr);
+    Game(MotionDetector &motionDetector);
     Level* getLevel() const { return level; };
     Paddle* getPaddle() const { return paddle; };
     Ball* getBall() const { return ball; };
@@ -40,8 +41,16 @@ protected:
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent * event);
 
+private slots:
+    void motionDetected(MotionType motionType);
+
+signals:
+    void onUpdate();
+    void onEnd();
+
 private:
     QTimer timer;
+    QTimer motionTimer;
     qint64 gameTime;
     std::map<int, bool> keys;
     std::map<int, bool> previousKeys;
@@ -50,6 +59,7 @@ private:
     Level *level;
     Paddle *paddle;
     UI *ui;
+    MotionDetector *motionDetector;
     unsigned int score = 0;
     unsigned int extraBalls = 2;
     bool gameOver = false;

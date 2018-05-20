@@ -23,7 +23,7 @@ Game* Game::instance() {
     return inst;
 }
 
-Game::Game(QWidget * parent) : QGLWidget(parent) {
+Game::Game(MotionDetector &motionDetector) : QGLWidget() {
     Game::inst = this;
     glEnable(GL_TEXTURE_2D);
     setFixedSize(WIN_WIDTH, WIN_HEIGHT);
@@ -45,6 +45,16 @@ Game::Game(QWidget * parent) : QGLWidget(parent) {
     });
     timer.setInterval(1.0 / FPS);
     timer.start();
+
+    this->motionDetector = &motionDetector;
+    connect(&motionDetector, SIGNAL(motionDetected(MotionType)), this, SLOT(motionDetected(MotionType)));
+    connect(this, SIGNAL(onUpdate()), &motionDetector, SLOT(updateCapture()));
+
+    connect(&motionTimer,  &QTimer::timeout, [&] {
+        emit onUpdate();
+    });
+    motionTimer.setInterval(.1);
+    motionTimer.start();
 }
 
 void Game::initializeGL() {
@@ -110,4 +120,12 @@ void Game::keyPressEvent(QKeyEvent * event) {
 void Game::keyReleaseEvent(QKeyEvent * event ) {
     event->accept();
     keys[event->key()] = false;
+}
+
+void Game::motionDetected(MotionType motionType) {
+    if(motionType == Left) {
+        paddle->move(false);
+    } else if(motionType == Right) {
+        paddle->move(true);
+    }
 }

@@ -11,9 +11,10 @@ Paddle::Paddle() {
 
 void Paddle::update(double dt) {
     if(Game::instance()->keyPressed(Qt::Key_Left)) {
-        velocity.setX(-40);
+        move(false);
+
     } else if(Game::instance()->keyPressed(Qt::Key_Right)) {
-        velocity.setX(40);
+        move(true);
     }
     if(Game::instance()->keyPressed(Qt::Key_Space)) {
         Game::instance()->getBall()->launch();
@@ -26,6 +27,10 @@ void Paddle::update(double dt) {
     } else if(position.x() + size.x() / 2 > side / 2) {
         position.setX(side / 2 - size.x() / 2);
     }
+}
+
+void Paddle::move(bool right) {
+    velocity.setX((right * 2 - 1) * 40);
 }
 
 void Paddle::render() {

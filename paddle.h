@@ -10,6 +10,7 @@ class Paddle : public Entity
 public:
     Paddle();
     void update(double dt);
+    void move(bool right);
     void render();
     double getCollision(const Ball& ball);
 
