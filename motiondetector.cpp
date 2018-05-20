@@ -36,7 +36,9 @@ void MotionDetector::run() {
 }
 
 void MotionDetector::updateCapture() {
+    return;
     cap >> frame2;
+    if(frame2.empty()) return;
     cv::flip(frame2, frame2, 1);
     cv::cvtColor(frame2, frame2Gray, COLOR_BGR2GRAY);
     vector<Point> vectors;

@@ -4,7 +4,14 @@
 #include "ball.h"
 #include <iostream>
 
+GLuint Paddle::texture = 0;
+QImage Paddle::image;
+
 Paddle::Paddle() {
+    if(!texture) {
+        image = QGLWidget::convertToGLFormat(QImage(":/textures/textures/paddle.png"));
+        glGenTextures(1, &texture);
+    }
     position.setZ(Game::instance()->getLevel()->side * .5);
     size = QVector3D(6, 1, 1);
 }
@@ -34,9 +41,15 @@ void Paddle::move(bool right) {
 }
 
 void Paddle::render() {
-    glPopMatrix();
+    glPushMatrix();
     glTranslated(position.x(), position.y(), position.z());
-    drawBox();
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits() );
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    drawTexturedBox();
+    glBindTexture(GL_TEXTURE_2D, NULL);
+    glPopMatrix();
 }
 
 double Paddle::getCollision(const Ball& ball) {

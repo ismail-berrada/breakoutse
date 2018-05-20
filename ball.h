@@ -18,7 +18,7 @@ public:
 
 private:
     QVector3D acceleration;
-    double speed = .6;
+    double speed = 12;
     double radius = .8;
     double angle = 0;
     bool stuck;

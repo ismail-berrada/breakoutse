@@ -32,6 +32,7 @@ void Ball::update(double dt) {
             velocity.setX(-velocity.x());
             hit = true;
         }
+        Paddle *pad = Game::instance()->getPaddle();
         if(position.z() + radius > side * .8) {
             visible = false;
             if(Game::instance()->loseBall()) {
@@ -41,12 +42,12 @@ void Ball::update(double dt) {
             position.setZ(-side * .5 + radius);
             velocity.setZ(-velocity.z());
             hit = true;
-        } else if(position.z() + radius > side * .5) {
-            double collision = Game::instance()->getPaddle()->getCollision(*this);
+        } else if(position.z() + radius < pad->getPosition().z() + pad->getSize().z() * .5 &&
+                  position.z() + radius > pad->getPosition().z() - pad->getSize().z() * .2) {
+            double collision = pad->getCollision(*this);
             if(collision >= -1 && collision <= 1) {
-                position.setZ(side * .5 - radius);
-                velocity.setZ(-velocity.z());
-                velocity.setX(2 * abs(velocity.z()) * collision);
+                velocity.setZ(-speed);
+                velocity.setX(speed * collision);
                 hit = true;
             }
         }
@@ -65,21 +66,28 @@ void Ball::update(double dt) {
                 QVector2D d = c - QVector2D(brickSize.x(), 0);
                 QVector2D ballCenter(position.x(), position.z());
                 QVector2D ballDeltaPos(velocity.x() * dt, velocity.z() * dt);
-                QVector2D p = ballCenter;
-                QVector2D q = ballCenter + ballDeltaPos;
-                if(segmentIntersection(p, q, a, b) ||
-                        segmentIntersection(p, q, c, d)) {
-                    cz = true;
-                    collided = true;
-                }
-                if(segmentIntersection(p, q, b, c) ||
-                        segmentIntersection(p, q, d, a)) {
-                    cx = true;
-                    collided = true;
+
+                for(double angle = 0; angle < 4 * acos(0); angle += .5 * acos(0)) {
+                    QVector2D collisionPoint = ballCenter + radius * QVector2D(cos(angle), sin(angle));
+                    QVector2D p = collisionPoint;
+                    QVector2D q = collisionPoint+ ballDeltaPos;
+                    if(segmentIntersection(p, q, a, b) ||
+                            segmentIntersection(p, q, c, d)) {
+                        cz = true;
+                        collided = true;
+                    }
+                    if(segmentIntersection(p, q, b, c) ||
+                            segmentIntersection(p, q, d, a)) {
+                        cx = true;
+                        collided = true;
+                    }
+                    if(collided) {
+                        bricks.erase(it);
+                        Game::instance()->addScore(50);
+                        break;
+                    }
                 }
                 if(collided) {
-                    bricks.erase(it);
-                    Game::instance()->addScore(50);
                     break;
                 }
             }
@@ -122,7 +130,7 @@ void Ball::launch() {
     if(!stuck) {
         return;
     }
-    velocity = QVector3D(rand() % 100 / 20. * speed, 0, -speed * 20);
+    velocity = QVector3D(rand() % 100 / 100. * speed, 0, -speed);
     stuck = false;
 }
 

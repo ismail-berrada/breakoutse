@@ -5,8 +5,10 @@
         <file>textures/wall.png</file>
         <file>textures/brick.png</file>
         <file>textures/ball.png</file>
+        <file>textures/paddle.png</file>
     </qresource>
     <qresource prefix="/fonts">
         <file>fonts/XLMono.ttf</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

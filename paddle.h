@@ -17,6 +17,8 @@ public:
 private:
     const double thickness = 1;
     const double friction = 4;
+    static GLuint texture;
+    static QImage image;
 };
 
 #endif // PADDLE_H
