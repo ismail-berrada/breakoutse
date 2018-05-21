@@ -7,11 +7,16 @@
 #include <vector>
 #include <brick.h>
 
+// Generates and stores the bricks.
 class Level {
 public:
     Level();
     ~Level();
+
+    // Builds the level. The bricks a placed randomly in a symmetrical fashion.
     void build();
+
+
     void update(double dt);
     void render();
     std::vector<Brick*>& getBricks() {return bricks;};

@@ -6,7 +6,7 @@ using namespace std;
 
 MotionDetector::MotionDetector() : frameWidth(320), frameHeight(240),
     divx(1), divy(1),
-    templateWidth(24), templateHeight(24),
+    templateWidth(25), templateHeight(25),
     cap(0) {
     divWidth = frameWidth / divx;
     divHeight = frameHeight / divy;
@@ -36,7 +36,6 @@ void MotionDetector::run() {
 }
 
 void MotionDetector::updateCapture() {
-    return;
     cap >> frame2;
     if(frame2.empty()) return;
     cv::flip(frame2, frame2, 1);

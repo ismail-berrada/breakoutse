@@ -3,6 +3,7 @@
 
 class Text3D;
 
+// A 3D user interface that displays the user score, extra balls and the title.
 class UI {
 public:
     UI();

@@ -5,6 +5,7 @@
 
 class Ball;
 
+// A paddle that scrolls left and right and catches the ball.
 class Paddle : public Entity
 {
 public:
@@ -17,7 +18,6 @@ public:
     void reset();
 
 private:
-    const double thickness = 1;
     const double friction = 4;
     static GLuint texture;
     static QImage image;

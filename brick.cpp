@@ -6,7 +6,6 @@ GLuint Brick::texture = 0;
 QImage Brick::image;
 
 Brick::Brick(QVector3D position) : Entity(position) {
-    destroyed = false;
     size = QVector3D(2.8, .9, .9);
     if(!texture) {
         image = QGLWidget::convertToGLFormat(QImage(":/textures/textures/brick.png"));

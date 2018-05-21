@@ -12,6 +12,7 @@ enum MotionType {
     None, Left, Right, Stop
 };
 
+// Used to detect three different gestures with the user webcam.
 class MotionDetector : public QThread {
     Q_OBJECT
 public:
@@ -26,14 +27,21 @@ private slots:
      void endCapture();
 
 private:
+     // The size of the captured frames
      int frameWidth;
      int frameHeight;
+
+     // The number of matching points per dimension, set to 1 by default. (Center only)
      int divx;
      int divy;
      int divWidth;
      int divHeight;
+
+     // The size of the template matched between frames
      int templateWidth;
      int templateHeight;
+
+
      VideoCapture cap;
      Mat frame1;
      Mat frame2;

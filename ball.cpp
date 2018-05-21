@@ -61,6 +61,7 @@ void Ball::update(double dt) {
         bool collided, cx = false, cz = false;
         do {
             collided = false;
+            // Compute collisions for each brick
             for(std::vector<Brick*>::iterator it = bricks.begin(); it != bricks.end(); ++it) {
                 Brick *brick = *it;
                 QVector2D brickCenter(brick->getPosition().x(), brick->getPosition().z());
@@ -71,11 +72,13 @@ void Ball::update(double dt) {
                 QVector2D d = c - QVector2D(brickSize.x(), 0);
                 QVector2D ballCenter(position.x(), position.z());
                 QVector2D ballDeltaPos(velocity.x() * dt, velocity.z() * dt);
-
+                // Discretize the ball in 8 points along a circle.
                 for(double angle = 0; angle < 4 * acos(0); angle += .5 * acos(0)) {
+                    // Consider a segment that ends where the position of this point will be in the next frame.
+                    // Compute segment/segment collision with the 4 brick sides.
                     QVector2D collisionPoint = ballCenter + radius * QVector2D(cos(angle), sin(angle));
                     QVector2D p = collisionPoint;
-                    QVector2D q = collisionPoint+ ballDeltaPos;
+                    QVector2D q = collisionPoint + ballDeltaPos;
                     if(segmentIntersection(p, q, a, b) ||
                             segmentIntersection(p, q, c, d)) {
                         cz = true;

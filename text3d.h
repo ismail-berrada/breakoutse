@@ -6,6 +6,7 @@
 #include <QFont>
 #include <QFontMetricsF>
 
+// Source: https://wiki.qt.io/Draw_Text_as_3D_Objects_with_OpenGL
 class Text3D {
 public:
     Text3D();

@@ -5,6 +5,7 @@
 #include <QRect>
 #include "entity.h"
 
+// A rectangular brick that can be destroyed by the ball.
 class Brick : public Entity {
 
   public:
@@ -13,14 +14,12 @@ class Brick : public Entity {
     void update(double dt);
     void render();
 
-  public:
-    bool isDestroyed() {return destroyed; };
-    void setDestroyed(bool d) {destroyed = d; };
-
   private:
-    bool destroyed;
+    // A countdown to make the brick appear out of the ground
     double spawnTimer;
     double spawnTime;
+
+    // The brick's texture
     static GLuint texture;
     static QImage image;
 };
